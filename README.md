@@ -353,9 +353,3 @@ Potential improvements include:
 
 ---
 
-## Author
-
-**Syed Murtuza Hussaini**
-
-GitHub:  
-https://github.com/hussainiadnan185-ux
