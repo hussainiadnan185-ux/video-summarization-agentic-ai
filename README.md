@@ -1,55 +1,209 @@
-# 🎬 Video AI Summarizer
+# Video AI Summarizer
 
-An AI-powered video summarization application built with **Streamlit, Langflow, and Google Gemini**.
+## Overview
 
-Users can upload a video and either:
+This project implements an AI-powered video summarization application using **Streamlit, Langflow, and Google Gemini**. The application allows users to upload a video and generate an AI-based summary or provide a custom request to analyze the video in a specific way.
 
-- Generate a structured summary of the video.
-- Enter a custom request to analyze the video in a specific way.
+The project combines a **Streamlit frontend** with a **Langflow workflow** and Google's Gemini video analysis capabilities. Videos are uploaded to the Gemini File API and analyzed using the Gemini Interactions API.
 
-## 🚀 Features
+Instead of relying on manual video review, the application provides an interactive workflow for extracting important information and generating structured responses from video content.
 
-- Upload video files in MP4, MOV, AVI, MPEG, and MPG formats
-- Preview uploaded videos in the Streamlit interface
-- AI-powered video analysis using Google Gemini
-- Structured video summaries
-- Custom requests for specific video analysis
-- Temporary video file handling
-- Download generated summaries as Markdown files
+---
 
-## 🏗️ Architecture
+## Execution Environment
+
+- Language: Python
+- Frontend: Streamlit
+- Workflow Orchestration: Langflow
+- AI Model: Google Gemini
+- Google AI SDK: Google GenAI SDK
+- HTTP Client: Requests
+- Execution Mode: Local application
+
+The application is designed to run locally, with Streamlit providing the user interface and Langflow handling the video summarization workflow.
+
+---
+
+## How to Run
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/hussainiadnan185-ux/video-summarization-agentic-ai.git
+cd video-summarization-agentic-ai
+```
+
+2. Make sure Python 3.12 is installed.
+
+3. Install and configure Langflow in a Python 3.12 environment.
+
+4. Import the included Langflow workflow:
 
 ```text
-Streamlit
-    ↓
-Langflow
-    ↓
-Gemini File API
-    ↓
-Gemini Interactions API
-    ↓
-Video Analysis / Summary
-    ↓
-Streamlit
+Video-Summarizer.json
+```
 
-## 🛠️ Technologies
-```- Python
-- Streamlit
-- Langflow
-- Google Gemini
-- Google GenAI SDK
-- Requests
-📁 Project Structure
-### 🛠️ Technologies
+5. Configure the **Video Summarizer** component with your own Google Gemini API key.
 
-- Python
-- Streamlit
-- Langflow
-- Google Gemini
-- Google GenAI SDK
-- Requests
+6. Create the Streamlit secrets file:
 
-### 📁 Project Structure
+```text
+.streamlit/secrets.toml
+```
+
+7. Use the structure provided in:
+
+```text
+.streamlit/secrets.toml.example
+```
+
+8. Add the required local configuration:
+
+- Langflow URL
+- Langflow Flow ID
+- Langflow API key
+- Video Summarizer component ID
+
+9. Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+10. Start Langflow in one terminal:
+
+```bash
+langflow run
+```
+
+Langflow will run at:
+
+```text
+http://localhost:7860
+```
+
+11. Start Streamlit in another terminal:
+
+```bash
+streamlit run app.py
+```
+
+12. Upload a video through the Streamlit interface and provide an optional custom request.
+
+The generated summary will be displayed in the application and can also be downloaded as a Markdown file.
+
+---
+
+## Supported Video Formats
+
+The application supports the following video formats:
+
+- MP4
+- MOV
+- AVI
+- MPEG
+- MPG
+
+Uploaded videos are temporarily stored locally during processing.
+
+---
+
+## Video Summarization Workflow
+
+The application follows an end-to-end video analysis workflow:
+
+1. User uploads a video through the Streamlit interface.
+2. Streamlit temporarily saves the uploaded video locally.
+3. Streamlit sends the local video path to the Langflow workflow.
+4. Langflow passes the video path to the custom **Video Summarizer** component.
+5. The component uploads the video to the Gemini File API.
+6. The application waits for Gemini to finish processing the uploaded video.
+7. The Gemini Interactions API analyzes the video.
+8. A structured summary or custom response is generated.
+9. Langflow returns the generated response to Streamlit.
+10. Streamlit displays the result to the user.
+11. The temporary uploaded video is deleted after processing.
+
+---
+
+## Default Summary
+
+When no custom request is provided, the application generates a structured summary containing:
+
+- Overview
+- Main Topics
+- Key Points
+- Important Details
+- Key Takeaways
+
+The generated summary is based only on the content of the uploaded video.
+
+---
+
+## Custom Video Analysis
+
+The application also supports user-defined requests.
+
+Examples include:
+
+```text
+Who is the person in this video? Answer only that.
+```
+
+```text
+List only the main topics discussed.
+```
+
+```text
+Summarize this video in 5 bullet points.
+```
+
+When a custom request is provided, it takes priority over the default structured summary format.
+
+This allows the application to be used for more specific video analysis tasks rather than only general summarization.
+
+---
+
+## Langflow Workflow
+
+The Langflow workflow consists of:
+
+```text
+Chat Input
+     ↓
+Video Summarizer
+     ↓
+Chat Output
+```
+
+The custom **Video Summarizer** component handles:
+
+- Local video file validation
+- Gemini API authentication
+- Video upload
+- Video processing status checks
+- Gemini video analysis
+- Retry handling for temporary service availability errors
+- Summary generation
+- Returning the result as a Langflow message
+
+---
+
+## AI Model
+
+The application uses:
+
+```text
+gemini-3.5-flash-lite
+```
+
+The model is used for analyzing uploaded video content and generating summaries or responses based on user requests.
+
+The implementation uses the **Google GenAI SDK** and the Gemini File API together with the Gemini Interactions API.
+
+---
+
+## Project Structure
 
 ```text
 video-summarization-agentic-ai/
@@ -67,104 +221,35 @@ video-summarization-agentic-ai/
     └── secrets.toml.example
 ```
 
-### ⚙️ Prerequisites
+### Main Files
 
-Before running the application, make sure you have:
+- `app.py`  
+  Streamlit frontend responsible for video upload, user requests, communication with Langflow, and displaying generated summaries.
 
-- Python 3.12
-- Langflow
-- A Google Gemini API key
-- A Langflow API key
+- `custom-component/video_summarizer.py`  
+  Custom Langflow component responsible for uploading videos to Gemini, waiting for video processing, executing the video analysis request, and returning the generated response.
 
-### 🔧 Setup
+- `Video-Summarizer.json`  
+  Exported Langflow workflow that can be imported into a Langflow installation.
 
-#### 1. Clone the Repository
+- `requirements.txt`  
+  Contains the Python dependencies required by the Streamlit application.
 
-```bash
-git clone https://github.com/hussainiadnan185-ux/video-summarization-agentic-ai.git
-cd video-summarization-agentic-ai
-```
+- `.streamlit/secrets.toml.example`  
+  Example configuration file showing the required local secrets and configuration values.
 
-#### 2. Set Up Langflow
+- `.gitignore`  
+  Prevents sensitive files, virtual environments, temporary uploads, and other local files from being committed.
 
-Install and configure Langflow in a Python 3.12 environment.
+---
 
-Import the included Langflow workflow:
+## Outputs
 
-```text
-Video-Summarizer.json
-```
+### Generated Summary
 
-into Langflow.
+The application displays the generated video analysis directly in the Streamlit interface.
 
-Configure the **Video Summarizer** component with your own Google Gemini API key.
-
-#### 3. Configure Streamlit
-
-Create the following file:
-
-```text
-.streamlit/secrets.toml
-```
-
-Use the structure shown in:
-
-```text
-.streamlit/secrets.toml.example
-```
-
-Add your:
-
-- Local Langflow URL
-- Langflow Flow ID
-- Langflow API key
-- Video Summarizer component ID
-
-**Never commit `secrets.toml` to GitHub.**
-
-#### 4. Install Dependencies
-
-Install the required Streamlit dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-#### 5. Run Langflow
-
-Open a terminal in the project directory and run:
-
-```bash
-langflow run
-```
-
-Langflow will run at:
-
-```text
-http://localhost:7860
-```
-
-Keep this terminal running.
-
-#### 6. Run Streamlit
-
-Open another terminal in the project directory and run:
-
-```bash
-streamlit run app.py
-```
-
-The Streamlit application will open in your browser.
-
-### 🧪 Example Requests
-
-The application supports both standard summaries and custom requests.
-
-#### Standard Summary
-
-Leave the request field empty.
-
-The application generates a structured summary containing:
+For standard requests, the output contains:
 
 - Overview
 - Main Topics
@@ -172,27 +257,21 @@ The application generates a structured summary containing:
 - Important Details
 - Key Takeaways
 
-#### Custom Request
+For custom requests, the output follows the user's requested format.
 
-Users can enter a specific request to control the type of analysis performed.
+### Downloadable Output
 
-Examples:
-
-```text
-Who is the person in this video? Answer only that.
-```
+Generated summaries can be downloaded as:
 
 ```text
-List only the main topics discussed.
+summary.md
 ```
 
-```text
-Summarize this video in 5 bullet points.
-```
+This allows the generated analysis to be saved and used outside the application.
 
-When a custom request is provided, it takes priority over the default summary format.
+---
 
-### 🔐 Security
+## Security
 
 API keys and local secrets are intentionally excluded from the repository.
 
@@ -203,12 +282,80 @@ The following files should never be committed:
 .env
 ```
 
-Temporary uploaded videos and Python virtual environments are also excluded through `.gitignore`.
+The actual Streamlit secrets file is excluded through `.gitignore`.
 
-### ⚠️ Limitations
+Temporary uploaded videos are also excluded from version control.
+
+The repository contains only the example secrets configuration:
+
+```text
+.streamlit/secrets.toml.example
+```
+
+No actual API keys are included in the repository.
+
+---
+
+## Key Features
+
+- AI-powered video summarization
+- Video preview before processing
+- Multiple video format support
+- Custom video analysis requests
+- Langflow-based workflow orchestration
+- Gemini File API integration
+- Gemini Interactions API integration
+- Retry handling for temporary Gemini service errors
+- Structured summary generation
+- Markdown summary download
+- Temporary video file cleanup
+- Local secret management
+
+---
+
+## Limitations
 
 - Langflow must be running locally for the Streamlit application to work.
-- Video processing time depends on video length and Gemini processing.
-- Gemini free-tier usage limits apply.
 - The application is currently designed for local use.
-- Uploaded videos are temporarily stored during processing and deleted afterward.
+- Video processing time depends on video length and Gemini processing time.
+- Gemini free-tier usage limits apply.
+- Uploaded videos are temporarily stored locally during processing.
+- Video processing can take several minutes depending on the uploaded video and service availability.
+- The application currently relies on the configured Gemini model and API availability.
+
+---
+
+## Future Improvements
+
+Potential improvements include:
+
+- Add support for additional video formats.
+- Add configurable summary styles and lengths.
+- Add timestamps for important events or topics.
+- Add support for extracting key moments from videos.
+- Improve the user interface and progress indicators.
+- Add persistent storage for generated summaries.
+- Add automated evaluation of summary quality.
+- Support additional Gemini models.
+- Deploy the application for remote access.
+
+---
+
+## Tools & Technologies
+
+- **Python** — Application development and backend logic
+- **Streamlit** — Interactive web interface
+- **Langflow** — Visual workflow orchestration
+- **Google Gemini** — AI-powered video analysis and summarization
+- **Google GenAI SDK** — Gemini API integration
+- **Requests** — Communication between Streamlit and Langflow
+- **Jupyter / VS Code** — Development and testing environment
+
+---
+
+## Author
+
+**Syed Murtuza Hussaini**
+
+GitHub:  
+https://github.com/hussainiadnan185-ux
