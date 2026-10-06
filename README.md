@@ -31,14 +31,14 @@ Video Analysis / Summary
     ↓
 Streamlit
 
-🛠️ Technologies
+## 🛠️ Technologies
 - Python
 - Streamlit
 - Langflow
 - Google Gemini
 - Google GenAI SDK
 - Requests
-📁 Project Structure
+## 📁 Project Structure
 video-summarization-agentic-ai/
 │
 ├── app.py
@@ -60,23 +60,23 @@ video-summarization-agentic-ai/
 │
 └── uploads/
 
-⚙️ Prerequisites
+## ⚙️ Prerequisites
 - Python 3.12
 - Langflow
 - A Google Gemini API key
 - A Langflow API key
-🔧 Setup
-1. Clone the repository
+## 🔧 Setup
+# 1. Clone the repository
 git clone <your-github-repository-url>
 cd video-summarization-agentic-ai
-2. Create the Langflow environment
+# 2. Create the Langflow environment
 Install and configure Langflow in a Python 3.12 environment.
 Import the included:
 Video-Summarizer.json
 
 flow into Langflow.
 Add your own Gemini API key to the Video Summarizer component.
-3. Configure Streamlit
+# 3. Configure Streamlit
 Create:
 .streamlit/secrets.toml
 
@@ -85,22 +85,22 @@ Use the structure shown in:
 
 Add your local Langflow URL, Flow ID, Langflow API key, and Video Summarizer component ID.
 Never commit secrets.toml to GitHub.
-4. Install Streamlit dependencies
+# 4. Install Streamlit dependencies
 pip install -r requirements.txt
 
-5. Run Langflow
+# 5. Run Langflow
 In one terminal:
 langflow run
 
 Langflow will run at:
 http://localhost:7860
 
-6. Run Streamlit
+# 6. Run Streamlit
 In another terminal:
 streamlit run app.py
 
 The Streamlit application will open in your browser.
-🧪 Example Requests
+## 🧪 Example Requests
 The application supports both standard summaries and custom requests.
 Standard summary
 Leave the request field empty.
@@ -119,14 +119,14 @@ List only the main topics discussed.
 Summarize this video in 5 bullet points.
 
 The custom request takes priority over the default summary format.
-🔐 Security
+## 🔐 Security
 API keys and local secrets are intentionally excluded from the repository.
 The following should never be committed:
 .streamlit/secrets.toml
 .env
 
 Temporary uploaded videos and Python virtual environments are also excluded through .gitignore.
-⚠️ Limitations
+## ⚠️ Limitations
 - Langflow must be running locally for the Streamlit application to work.
 - Video processing time depends on video length and Gemini processing.
 - Gemini free-tier usage limits apply.
